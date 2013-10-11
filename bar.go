@@ -8,7 +8,7 @@ import (
 const (
 	BARS_FILE = "bars.db"
 )
-
+//TODO: mongodb database instead of text files
 type Bar struct {
 	Id   string
 	Name string

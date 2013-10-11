@@ -13,7 +13,8 @@ func AddBarHundler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	bar := Bar{Name: bar_name.Name, Id: "hello"}
+	// TODO : generate an iD
+	bar := Bar{Name: bar_name.Name, Id: "id"}
 	AddBar(bar)
 }
 
