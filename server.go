@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -26,5 +27,6 @@ func main() {
 	http.HandleFunc("/bar", AddBarHundler)
 	http.HandleFunc("/bars", ListBarsHundler)
 	http.Handle("/", http.FileServer(http.Dir("webapp")))
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("listen and serve at http://localhost:8081 ...")
+	http.ListenAndServe(":8081", nil)
 }

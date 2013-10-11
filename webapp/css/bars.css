@@ -1,0 +1,13 @@
+#menu {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    top: 0;
+    left: 0;           
+}
+
+#b {
+    width: 80 %;
+    margin: 0 auto;    
+    padding: 10px;    
+}
