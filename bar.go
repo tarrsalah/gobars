@@ -21,7 +21,7 @@ func ListBars() []Bar {
 	dec := json.NewDecoder(bars_file)
 	err := dec.Decode(&bars)
 	if err != nil {
-		return []Bar{}
+		return []Bar{}			
 	}
 	return bars
 }
