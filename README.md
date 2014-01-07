@@ -11,3 +11,7 @@ https://github.com/jamesward/jaxrsbars demo in go
   * Open your brower on `localhost:8081`
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/tarrsalah/gobars/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
