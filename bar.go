@@ -8,6 +8,7 @@ import (
 const (
 	BARS_FILE = "bars.db"
 )
+
 //TODO: mongodb database instead of text files
 type Bar struct {
 	Id   string
@@ -21,10 +22,11 @@ func ListBars() []Bar {
 	dec := json.NewDecoder(bars_file)
 	err := dec.Decode(&bars)
 	if err != nil {
-		return []Bar{}			
+		return []Bar{}
 	}
 	return bars
 }
+
 
 func AddBar(bar Bar) error {
 	bars := ListBars()

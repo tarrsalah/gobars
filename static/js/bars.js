@@ -1,34 +1,33 @@
-$(function() {    
-    loadbars();    
+(function(){
+		$(function() {    
+		loadbars();    
+		$("#submit").click(addbar);
+		$("#bar").keyup(function(key) {
+			if (key.which == 13) {
+				addbar();
+			}
+		});
+	});
 
-    $("#submit").click(addbar);
-    $("#bar").keyup(function(key) {
-        if (key.which == 13) {
-            addbar();
-        }
-    });
+	var loadbars = function() {
+		$.ajax("/bars", {
+			dataType: 'json',
+		})
+		.done(function(data) {
+				$("#bars").children().remove();
+				$.each(data, function(index, item) {
+					$("#bars").prepend($("<li>").text(item.Name));
+				});
+		});
+	};
 
-});
-
-function loadbars() {
-    $.ajax("/bars", {
-        contentType: "application/json",
-        success: function(data) {
-            $("#bars").children().remove();
-            $.each(data, function(index, item) {
-                $("#bars").prepend($("<li>").text(item.Name));
-            });
-        }
-    });
-}
-
-function addbar() {
-    $.ajax({
-        url: "/bar",
-        type: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify({Name:$("#bar").val()}),
-        success: loadbars
-    });
-}
+	var addbar = function() {
+		$.ajax({
+			type: 'POST',
+			url: "/bar",
+			data: JSON.stringify({Name:$("#bar").val()}),
+			success: loadbars,
+			contentType: 'application/json'
+		});
+	};
+}());
