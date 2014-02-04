@@ -14,4 +14,5 @@ https://github.com/jamesward/jaxrsbars demo in go
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/tarrsalah/gobars/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![baby-gopher](https://raw2.github.com/drnic/babygopher-site/gh-pages/images/babygopher-badge.png)](http://www.babygopher.org)
 

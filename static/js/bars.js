@@ -1,5 +1,5 @@
 (function(){
-		$(function() {    
+	$(function() {    
 		loadbars();    
 		$("#submit").click(addbar);
 		$("#bar").keyup(function(key) {
