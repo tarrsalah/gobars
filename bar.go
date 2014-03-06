@@ -27,7 +27,6 @@ func ListBars() []Bar {
 	return bars
 }
 
-
 func AddBar(bar Bar) error {
 	bars := ListBars()
 	bars_file, err := os.OpenFile(BARS_FILE, os.O_RDWR, 0666)
