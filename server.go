@@ -27,7 +27,7 @@ func ListBarsHundler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/bar", AddBarHundler)
 	http.HandleFunc("/bars", ListBarsHundler)
-	http.Handle("/", http.FileServer(http.Dir("static")))
+	http.Handle("/", http.FileServer(http.Dir("public")))
 	fmt.Println("listen and serve at http://localhost:8081 ...")
 	http.ListenAndServe(":8081", nil)
 }
