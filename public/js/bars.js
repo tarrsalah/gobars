@@ -27,7 +27,7 @@ define('bars', ['jquery'], function($) {
 				$.ajax({
 					type: 'POST',
 					url: "/bar",
-					data: JSON.stringify({Name:$("#bar").val()}),
+					data: JSON.stringify({name:$("#bar").val()}),
 					success: loadbars,
 					contentType: 'application/json'
 				});
