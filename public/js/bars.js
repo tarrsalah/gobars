@@ -1,3 +1,4 @@
+// TODO refactor this mess !
 define('bars', ['jquery'], function($) {
 	return {
 		init : function(){
