@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -11,7 +10,6 @@ import (
 )
 
 var (
-	db    *sql.DB
 	barDB barRepositorySql = barRepositorySql{}
 )
 
