@@ -11,9 +11,9 @@ type Bar struct {
 	Name string `json: "name"`
 }
 
-type barRepositorySql struct{}
+type barRepo struct{}
 
-func (b barRepositorySql) GetAllBars() []Bar {
+func (b barRepo) GetAllBars() []Bar {
 	var (
 		id   int
 		name string
@@ -37,7 +37,7 @@ func (b barRepositorySql) GetAllBars() []Bar {
 	return bars
 }
 
-func (b barRepositorySql) InsertBar(bars []Bar) {
+func (b barRepo) InsertBar(bars []Bar) {
 	sqlDB := SetupDB()
 	defer sqlDB.Close()
 	for _, bar := range bars {

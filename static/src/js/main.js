@@ -1,0 +1,2 @@
+bars = require("./bars");
+bars();

@@ -1,0 +1,14 @@
+{
+  "name": "gobars.js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "author": "tarrsalah",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "vinyl-source-stream": "~1.0.0",
+    "gulp": "~3.8.8",
+    "browserify": "~5.11.1",
+    "jquery": "~2.1.1"
+  }
+}

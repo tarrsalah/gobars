@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	barDB barRepositorySql = barRepositorySql{}
+	barDB barRepo = barRepo{}
 )
 
 func AddBarHundler(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,7 @@ func main() {
 	BootstrpDB()
 	http.HandleFunc("/bar", AddBarHundler)
 	http.HandleFunc("/bars", ListBarsHundler)
-	http.Handle("/", http.FileServer(http.Dir("public")))
+	http.Handle("/", http.FileServer(http.Dir("static/dist")))
 	fmt.Println("listen and serve at http://localhost:8081 ...")
 	http.ListenAndServe(":8081", nil)
 }
