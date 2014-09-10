@@ -34,7 +34,7 @@ func main() {
 	BootstrpDB()
 	http.HandleFunc("/bar", AddBarHundler)
 	http.HandleFunc("/bars", ListBarsHundler)
-	http.Handle("/", http.FileServer(http.Dir("static/dist")))
+	http.Handle("/", http.FileServer(http.Dir("static")))
 	fmt.Println("listen and serve at http://localhost:8081 ...")
 	http.ListenAndServe(":8081", nil)
 }
