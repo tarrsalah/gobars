@@ -8,7 +8,7 @@ gulp.task('js', function() {
     return browserify('./js/main')
 	.bundle()
 	.pipe(source('bundle.js'))
-    	.pipe(streamify(uglify()))
+	.pipe(streamify(uglify()))
 	.pipe(gulp.dest('../static/js'));	
 });
 
