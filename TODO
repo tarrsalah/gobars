@@ -1,5 +1,0 @@
-* Redesign the http API
-* enhance the client-side code
-* move to martini
-* add auth
-* try gorp

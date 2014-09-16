@@ -1,6 +1,10 @@
 // business and data layer
 package main
 
+import (
+	"database/sql"
+)
+
 type BarRepository interface {
 	GetAllBars() []Bar
 	InsertBar(Bar)
@@ -11,7 +15,9 @@ type Bar struct {
 	Name string `json: "name"`
 }
 
-type barRepo struct{}
+type barRepo struct {
+	db *sql.DB
+}
 
 func (b barRepo) GetAllBars() []Bar {
 	var (
@@ -19,10 +25,8 @@ func (b barRepo) GetAllBars() []Bar {
 		name string
 	)
 	bars := []Bar{}
-	sqlDB := SetupDB()
-	defer sqlDB.Close()
 
-	rows, err := sqlDB.Query("select * from bars")
+	rows, err := b.db.Query("select * from bars")
 	if err != nil {
 		panic(err)
 	}
@@ -38,10 +42,9 @@ func (b barRepo) GetAllBars() []Bar {
 }
 
 func (b barRepo) InsertBar(bars []Bar) {
-	sqlDB := SetupDB()
-	defer sqlDB.Close()
+
 	for _, bar := range bars {
-		if _, err := sqlDB.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
+		if _, err := b.db.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
 			panic(err)
 		}
 	}
