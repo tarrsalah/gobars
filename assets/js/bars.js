@@ -1,4 +1,4 @@
-var $ = require('jquery')
+var $ = require('jquery');
 
 module.exports = function() {
     $(function() {    
@@ -10,11 +10,11 @@ module.exports = function() {
 	    }
 	});
     });
-}
+};
 
 var loadbars = function() {
     $.ajax("/bars", {
-	dataType: 'json',
+	dataType: 'json'
     })
 	.done(function(data) {
 	    $("#bars").children().remove();
