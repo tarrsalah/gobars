@@ -14,8 +14,3 @@ https://github.com/jamesward/jaxrsbars demo in go
   * `./go build`
   * `./gobars`
   * Open your brower on `localhost:8081`
-
-
-
-[![baby-gopher](https://raw2.github.com/drnic/babygopher-site/gh-pages/images/babygopher-badge.png)](http://www.babygopher.org)
-
