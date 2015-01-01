@@ -1,0 +1,13 @@
+h1 , .bars{
+    margin-left: 20px;
+}
+
+li {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+#container {
+    width: 80%;
+    margin: 0 auto;
+}

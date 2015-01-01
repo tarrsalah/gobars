@@ -1,2 +1,0 @@
-bars = require("./bars");
-bars();
