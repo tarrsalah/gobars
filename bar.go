@@ -5,8 +5,8 @@ import (
 )
 
 type Bar struct {
-	Id   int
-	Name string `json: "name"`
+	Id   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type DS struct {
@@ -36,7 +36,6 @@ func (b DS) GetAllBars() []Bar {
 }
 
 func (b DS) InsertBar(bars []Bar) {
-
 	for _, bar := range bars {
 		if _, err := b.db.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
 			panic(err)
