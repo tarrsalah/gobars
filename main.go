@@ -18,12 +18,7 @@ const (
 		create table bars (
 			id INTEGER PRIMARY KEY,
 			bar TEXT
-		);
-
-               INSERT INTO bars(bar) VALUES ("one bar");
-               INSERT INTO bars(bar) VALUES ("second bar");
-               INSERT INTO bars(bar) VALUES ("third bar");
- 	`
+		);`
 )
 
 type Context struct {
