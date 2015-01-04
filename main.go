@@ -14,16 +14,33 @@ import (
 
 const (
 	BARS_FILE = "bars.db"
+	SQL       = `
+		create table bars (
+			id INTEGER PRIMARY KEY,
+			bar TEXT
+		);
+
+               INSERT INTO bars(bar) VALUES ("one bar");
+               INSERT INTO bars(bar) VALUES ("second bar");
+               INSERT INTO bars(bar) VALUES ("third bar");
+ 	`
 )
 
 type Context struct {
 	DS
 }
 
-func bars(bars []Bar) map[string][]Bar {
+func WrapBars(bars []Bar) map[string][]Bar {
 	return map[string][]Bar{
 		"bars": bars,
 	}
+}
+
+func WrapBar(bar Bar) map[string]Bar {
+	return map[string]Bar{
+		"bar": bar,
+	}
+
 }
 
 func NewContext(db *sql.DB) *Context {
@@ -36,20 +53,20 @@ func NewContext(db *sql.DB) *Context {
 func AddBarHundler(ctx *Context) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
-		b := Bar{}
-		if err := dec.Decode(&b); err != nil {
+		wrapped := WrapBar(Bar{})
+		if err := dec.Decode(&wrapped); err != nil {
 			log.Fatal(err)
 			return
 		}
-		ctx.InsertBar([]Bar{b})
-		log.Println(b)
-		response.Created(w, b)
+		b := wrapped["bar"]
+		id, _ := ctx.InsertBar(b)
+		response.Created(w, WrapBar(Bar{Id: id, Name: b.Name}))
 	})
 }
 
 func ListBarsHundler(ctx *Context) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		response.OK(w, bars(ctx.GetAllBars()))
+		response.OK(w, WrapBars(ctx.GetAllBars()))
 	})
 }
 
@@ -63,16 +80,7 @@ func main() {
 	if db, err = sql.Open("sqlite3", BARS_FILE); err != nil {
 		panic(err)
 	}
-	if _, err = db.Exec(`
-		create table bars (
-			id INTEGER PRIMARY KEY,
-			bar TEXT
-		);
-
-               INSERT INTO bars(bar) VALUES ("one bar");
-               INSERT INTO bars(bar) VALUES ("second bar");
-               INSERT INTO bars(bar) VALUES ("third bar");
- 	`); err != nil {
+	if _, err = db.Exec(SQL); err != nil {
 		panic(err)
 	}
 
