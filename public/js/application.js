@@ -19,7 +19,10 @@
     App.ApplicationController = Ember.Controller.extend({
 	actions: {
 	    addBar: function() {
-		console.log(this.get("newBar"));
+		var newBar = this.store.createRecord('bar', {
+		    name: this.get("newBar")
+		});
+		newBar.save();
 	    }
 	}
     });
