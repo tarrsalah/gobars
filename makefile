@@ -6,5 +6,5 @@ server :
 client:
 	(cd ./public && bower install)
 
-run: server
+listen: server
 	./gobars
