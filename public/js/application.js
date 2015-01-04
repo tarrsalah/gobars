@@ -5,10 +5,6 @@
 
     window.App= App;
 
-    App.ApplicationAdapter = DS.RESTAdapter.extend({
-	host: 'http://localhost:3000'
-    });
-
     App.Bar = DS.Model.extend({
 	name: DS.attr('string')
     });
