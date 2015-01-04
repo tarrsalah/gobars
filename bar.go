@@ -5,7 +5,7 @@ import (
 )
 
 type Bar struct {
-	Id   int    `json:"id"`
+	Id   int64  `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -15,7 +15,7 @@ type DS struct {
 
 func (b DS) GetAllBars() []Bar {
 	var (
-		id   int
+		id   int64
 		name string
 	)
 	bars := []Bar{}
@@ -35,10 +35,12 @@ func (b DS) GetAllBars() []Bar {
 	return bars
 }
 
-func (b DS) InsertBar(bars []Bar) {
-	for _, bar := range bars {
-		if _, err := b.db.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
-			panic(err)
-		}
+func (b DS) InsertBar(bar Bar) (int64, error) {
+
+	if result, err := b.db.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
+		panic(err)
+	} else {
+		return result.LastInsertId()
 	}
+
 }
