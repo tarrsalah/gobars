@@ -92,6 +92,6 @@ func main() {
 
 	app.Get("/bars", ListBarsHundler(ctx))
 	app.Post("/bars", AddBarHundler(ctx))
-
+	log.Println("Listening on http://localhost:3000 ...")
 	app.Listen(":3000")
 }

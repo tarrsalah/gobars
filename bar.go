@@ -42,5 +42,4 @@ func (b DS) InsertBar(bar Bar) (int64, error) {
 	} else {
 		return result.LastInsertId()
 	}
-
 }
