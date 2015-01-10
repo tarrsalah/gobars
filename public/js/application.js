@@ -1,4 +1,4 @@
-;(function(Ember, DS) {
+(function(Ember, DS) {
     var App = Ember.Application.create({
 	LOG_TRANSITIONS: true
     });

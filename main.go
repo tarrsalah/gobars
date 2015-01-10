@@ -52,25 +52,6 @@ func NewContext(db *sql.DB) *Context {
 		},
 	}
 }
-func AddBarHundler(ctx *Context) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		dec := json.NewDecoder(r.Body)
-		wrapped := WrapBar(Bar{})
-		if err := dec.Decode(&wrapped); err != nil {
-			log.Fatal(err)
-			return
-		}
-		b := wrapped["bar"]
-		id, _ := ctx.InsertBar(b)
-		response.Created(w, WrapBar(Bar{Id: id, Name: b.Name}))
-	})
-}
-
-func ListBarsHundler(ctx *Context) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		response.OK(w, WrapBars(ctx.GetAllBars()))
-	})
-}
 
 func main() {
 	var (
@@ -97,8 +78,26 @@ func main() {
 		http.ServeFile(w, r, "./public/index.html")
 	})
 
-	app.Get("/bars", ListBarsHundler(ctx))
-	app.Post("/bars", AddBarHundler(ctx))
+	app.Get("/bars", func(w http.ResponseWriter, r *http.Request) {
+		response.OK(w, WrapBars(ctx.GetAllBars()))
+	})
+
+	app.Post("/bars", func(w http.ResponseWriter, r *http.Request) {
+		dec := json.NewDecoder(r.Body)
+		bar := Bar{}
+		wrapped := WrapBar(bar)
+
+		if err := dec.Decode(&wrapped); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		bar = UnWrapBar(wrapped)
+		id, _ := ctx.InsertBar(bar)
+		bar.Id = id
+		response.Created(w, WrapBar(bar))
+	})
+
 	log.Println("Listening on http://localhost:3000 ...")
 	app.Listen(":3000")
 }
