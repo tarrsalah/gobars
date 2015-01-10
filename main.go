@@ -35,7 +35,14 @@ func WrapBar(bar Bar) map[string]Bar {
 	return map[string]Bar{
 		"bar": bar,
 	}
+}
 
+func UnWrapBar(w map[string]Bar) Bar {
+	return w["bar"]
+}
+
+func UnWrapBars(w map[string][]Bar) []Bar {
+	return w["bars"]
 }
 
 func NewContext(db *sql.DB) *Context {
