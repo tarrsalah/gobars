@@ -72,25 +72,26 @@ func main() {
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 
-func getBarsHandler(w http.ResponseWriter, r *http.Request) {
-	replyJsonDs(w, ctx.GetAllBars(), http.StatusOK)
-}
-
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./public/index.html")
 }
+
+func getBarsHandler(w http.ResponseWriter, r *http.Request) {
+	json(w, ctx.GetAllBars(), http.StatusOK)
+}
+
 func postBarHandler(w http.ResponseWriter, r *http.Request) {
-	bar := Bar{}
-	if err := jsonds.NewDecoder(r.Body).Decode(&bar); err != nil {
+	bar := new(Bar)
+	if err := jsonds.NewDecoder(r.Body).Decode(bar); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	id, _ := ctx.InsertBar(bar)
+	id, _ := ctx.InsertBar(*bar)
 	bar.Id = id
-	replyJsonDs(w, bar, http.StatusOK)
+	json(w, bar, http.StatusCreated)
 }
 
-func replyJsonDs(w http.ResponseWriter, v interface{}, code int) {
+func json(w http.ResponseWriter, v interface{}, code int) {
 	var (
 		b   []byte
 		err error
@@ -99,8 +100,8 @@ func replyJsonDs(w http.ResponseWriter, v interface{}, code int) {
 	if b, err = jsonds.Marshal(v); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	} else {
-		w.WriteHeader(http.StatusOK)
-		w.Write(b)
 	}
+
+	w.WriteHeader(code)
+	w.Write(b)
 }

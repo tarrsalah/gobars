@@ -1,5 +1,5 @@
 h1 , .bars{
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 li {
@@ -9,5 +9,5 @@ li {
 
 #container {
     width: 80%;
-    margin: 0 auto;
+    margin: 0 20px
 }
