@@ -2,8 +2,8 @@ package main
 
 import (
 	"database/sql"
-	"github.com/bmizerany/pat"
 	"github.com/gohttp/logger"
+	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/tarrsalah/jsonds"
 	"log"
@@ -55,21 +55,21 @@ func NewContext(db *sql.DB) *Context {
 
 func main() {
 	logger := logger.New()
-	pat := pat.New()
+	r := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./public/"))
-
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
-	pat.Get("/", logger(http.HandlerFunc(indexHandler)))
-	pat.Get("/bars", logger(http.HandlerFunc(getBarsHandler)))
-	pat.Post("/bars", logger(http.HandlerFunc(postBarHandler)))
+
+	r.Handle("/", logger(http.HandlerFunc(indexHandler))).
+		Methods("GET")
+	r.Handle("/bars", logger(http.HandlerFunc(getBarsHandler))).
+		Methods("GET")
+	r.Handle("/bars", logger(http.HandlerFunc(postBarHandler))).
+		Methods("POST")
 
 	log.Println("Listening on http://localhost:3000 ...")
-	http.Handle("/", pat)
-	err := http.ListenAndServe(":3000", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 
 func getBarsHandler(w http.ResponseWriter, r *http.Request) {
