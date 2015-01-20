@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"os"
 )
 
 type Bar struct {
@@ -9,11 +10,28 @@ type Bar struct {
 	Name string `json:"name"`
 }
 
-type DS struct {
+type store struct {
 	db *sql.DB
 }
 
-func (b DS) GetAllBars() []Bar {
+func NewStore() *store {
+	var (
+		db  *sql.DB
+		err error
+	)
+
+	os.Remove("./bars.db")
+	if db, err = sql.Open("sqlite3", BARS_FILE); err != nil {
+		panic(err)
+	}
+	if _, err = db.Exec(SQL); err != nil {
+		panic(err)
+	}
+
+	return &store{db}
+}
+
+func (b *store) GetAllBars() []Bar {
 	var (
 		id   int64
 		name string
@@ -35,7 +53,7 @@ func (b DS) GetAllBars() []Bar {
 	return bars
 }
 
-func (b DS) InsertBar(bar Bar) (int64, error) {
+func (b *store) InsertBar(bar Bar) (int64, error) {
 
 	if result, err := b.db.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
 		panic(err)

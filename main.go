@@ -1,14 +1,12 @@
 package main
 
 import (
-	"database/sql"
 	"github.com/gohttp/logger"
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/tarrsalah/jsonds"
 	"log"
 	"net/http"
-	"os"
 )
 
 const (
@@ -20,19 +18,7 @@ const (
 		);`
 )
 
-var ctx *Context
-
-type Context struct {
-	DS
-}
-
-func NewContext(db *sql.DB) *Context {
-	return &Context{
-		DS: DS{
-			db: db,
-		},
-	}
-}
+var s = NewStore()
 
 func main() {
 	logger := logger.New()
@@ -58,7 +44,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getBarsHandler(w http.ResponseWriter, r *http.Request) {
-	json(w, ctx.GetAllBars(), http.StatusOK)
+	json(w, s.GetAllBars(), http.StatusOK)
 }
 
 func postBarHandler(w http.ResponseWriter, r *http.Request) {
@@ -69,7 +55,7 @@ func postBarHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, _ := ctx.InsertBar(*bar)
+	id, _ := s.InsertBar(*bar)
 	bar.Id = id
 	json(w, bar, http.StatusCreated)
 }
@@ -88,21 +74,4 @@ func json(w http.ResponseWriter, v interface{}, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	w.Write(b)
-}
-
-func init() {
-	var (
-		db  *sql.DB
-		err error
-	)
-
-	os.Remove("./bars.db")
-	if db, err = sql.Open("sqlite3", BARS_FILE); err != nil {
-		panic(err)
-	}
-	if _, err = db.Exec(SQL); err != nil {
-		panic(err)
-	}
-
-	ctx = NewContext(db)
 }
