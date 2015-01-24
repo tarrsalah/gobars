@@ -10,6 +10,16 @@ type Bar struct {
 	Name string `json:"name"`
 }
 
+func (b Bar) Root() string {
+	return "bar"
+}
+
+type Bars []Bar
+
+func (b Bars) Root() string {
+	return "bars"
+}
+
 type store struct {
 	db *sql.DB
 }
@@ -31,7 +41,7 @@ func NewStore() *store {
 	return &store{db}
 }
 
-func (b *store) GetAllBars() []Bar {
+func (b *store) GetAllBars() Bars {
 	var (
 		id   int64
 		name string
@@ -50,7 +60,7 @@ func (b *store) GetAllBars() []Bar {
 		}
 		bars = append(bars, Bar{id, name})
 	}
-	return bars
+	return Bars(bars)
 }
 
 func (b *store) InsertBar(bar Bar) (int64, error) {

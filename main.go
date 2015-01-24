@@ -51,6 +51,7 @@ func postBarHandler(w http.ResponseWriter, r *http.Request) {
 	bar := new(Bar)
 
 	if err := jsonds.NewDecoder(r.Body).Decode(bar); err != nil {
+		log.Printf("Error: %s\n", err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -66,7 +67,8 @@ func json(w http.ResponseWriter, v interface{}, code int) {
 		err error
 	)
 
-	if b, err = jsonds.Marshal(v); err != nil {
+	if b, err = jsonds.MarshalIndent(v, "", " "); err != nil {
+		log.Printf("Error: %s\n", err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
