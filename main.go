@@ -61,7 +61,7 @@ func postBarHandler(w http.ResponseWriter, r *http.Request) {
 	json(w, bar, http.StatusCreated)
 }
 
-func json(w http.ResponseWriter, v interface{}, code int) {
+func json(w http.ResponseWriter, v jsonds.JsonRoot, code int) {
 	var (
 		b   []byte
 		err error
