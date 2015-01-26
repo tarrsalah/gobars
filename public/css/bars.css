@@ -7,6 +7,10 @@ li {
     margin-bottom:5px;
 }
 
+#add {
+    margin-left: 10px;
+}
+
 #container {
     width: 80%;
     margin: 0 20px

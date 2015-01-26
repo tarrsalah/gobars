@@ -5,35 +5,7 @@
     <link rel="stylesheet" href="/public/bower_components/pure/pure-min.css">
     <link rel="stylesheet" href="/public/css/bars.css">
   </head>
-  <body>
-    <script type="text/x-handlebars">
-      <div id="container">
-	<header>
-	  <h1>Bars</h1>
-	</header>
-	<div class="bars">
-	  <form class="pure-form">
-	    <fieldset>
-	      {{input type="text" value=newBar}}
-	      <button {{action "addBar"}} type="submit"
-		      class="pure-button pure-button-primary">
-		go!
-	      </button>
-	    </fieldset>
-	  </form>
-	  <ul>
-	    {{#each bar in model}}
-	    <li>{{bar.name}}</li>
-	    {{/each}}
-	  </ul>
-	</div>
-      </div>
-    </script>
-
-    <script src="/public/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/public/bower_components/handlebars/handlebars.min.js"></script>
-    <script src="/public/bower_components/ember/ember.min.js"></script>
-    <script src="/public/bower_components/ember-data/ember-data.min.js"></script>
-    <script src="/public/js/application.js"></script>
-  </body>
+  <body></body>
+  <script src="/public/bower_components/mithril/mithril.min.js"></script>
+  <script src="/public/js/app.js"></script>
 </html>
