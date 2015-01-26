@@ -1,10 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"github.com/gohttp/logger"
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/tarrsalah/jsonds"
 	"log"
 	"net/http"
 )
@@ -15,7 +15,14 @@ const (
 		create table bars (
 			id INTEGER PRIMARY KEY,
 			bar TEXT
-		);`
+		);
+		insert into bars(bar)
+			    values ("one bar"),
+				   ("second bar"),
+				   ("third bar"),
+				   ("fourth bar"),
+				   ("fifth bar");
+		`
 )
 
 var s = NewStore()
@@ -44,13 +51,13 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getBarsHandler(w http.ResponseWriter, r *http.Request) {
-	json(w, s.GetAllBars(), http.StatusOK)
+	response(w, s.GetAllBars(), http.StatusOK)
 }
 
 func postBarHandler(w http.ResponseWriter, r *http.Request) {
 	bar := new(Bar)
 
-	if err := jsonds.NewDecoder(r.Body).Decode(bar); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(bar); err != nil {
 		log.Printf("Error: %s\n", err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -58,16 +65,16 @@ func postBarHandler(w http.ResponseWriter, r *http.Request) {
 
 	id, _ := s.InsertBar(*bar)
 	bar.Id = id
-	json(w, bar, http.StatusCreated)
+	response(w, bar, http.StatusCreated)
 }
 
-func json(w http.ResponseWriter, v jsonds.JsonRoot, code int) {
+func response(w http.ResponseWriter, v interface{}, code int) {
 	var (
 		b   []byte
 		err error
 	)
 
-	if b, err = jsonds.MarshalIndent(v, "", " "); err != nil {
+	if b, err = json.MarshalIndent(v, "", " "); err != nil {
 		log.Printf("Error: %s\n", err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
