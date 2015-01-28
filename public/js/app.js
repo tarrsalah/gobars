@@ -6,25 +6,31 @@ var Bar = function(data) {
 };
 
 app.vm= {};
-app.vm.bar =  m.prop("");
-app.vm.bars = m.prop([]);
-app.vm.add = function() {
-    m.request({method:"POST",
-	       url:"/bars",
-	       data: {
-		   name:app.vm.bar()
-	       }}).then(function(bar) {
-		   app.vm.bars().push(new Bar(bar));
-	       });
-};
-
 app.vm.init = function() {
-    m.request({method:"GET", url:"/bars"}).
-	then(function(bars) {
+    var vm = app.vm;
+    m.request({
+	method:"GET",
+	url:"/bars"})
+	.then(function(bars) {
 	    bars.forEach(function(bar) {
-		app.vm.bars().push(new Bar(bar));
+		vm.bars().push(new Bar(bar));
 	    });
 	});
+    vm.bar =  m.prop("");
+    vm.bars = m.prop([]);
+    vm.add = function() {
+	if (vm.bar()) {
+	    m.request({
+		method:"POST",
+		url:"/bars",
+		data: {
+		    name: vm.bar()
+		}})
+		.then(function(bar) {
+		    vm.bars().push(new Bar(bar));
+		});
+	}
+    };
 };
 
 app.view = function() {
