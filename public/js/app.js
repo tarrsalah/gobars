@@ -1,24 +1,29 @@
-var app = {};
+(function() {
+    var app = {};
 
-var Bar = function(data) {
-    this.id = m.prop(data.id);
-    this.name= m.prop(data.name);
-};
+    // Models
+    var Bar = function(data) {
+	this.id = m.prop(data.id);
+	this.name= m.prop(data.name);
+    };
 
-app.vm= {};
-app.vm.init = function() {
-    var vm = app.vm;
-    m.request({
-	method:"GET",
-	url:"/bars"})
-	.then(function(bars) {
-	    bars.forEach(function(bar) {
-		vm.bars().push(new Bar(bar));
+    // Veiw Model
+    app.vm= {};
+    app.vm.init = function() {
+	var vm = app.vm;
+	vm.bar =  m.prop("");
+	vm.bars = m.prop([]);
+	m.request({
+	    method:"GET",
+	    url:"/bars"})
+	    .then(function(bars) {
+		bars.forEach(function(bar) {
+		    vm.bars().push(new Bar(bar));
+		});
 	    });
-	});
-    vm.bar =  m.prop("");
-    vm.bars = m.prop([]);
-    vm.add = function() {
+    };
+    app.vm.add = function() {
+	var vm = app.vm;
 	if (vm.bar()) {
 	    m.request({
 		method:"POST",
@@ -31,39 +36,40 @@ app.vm.init = function() {
 		});
 	}
     };
-};
 
-app.view = function() {
-    return m("div", {id:"container"},[
-	m("header", [
-	    m("h1", "Bars")
-	]),
+    // Controlelr
+    app.controller= function() {
+	app.vm.init();
+    };
 
-	m("div", {class:"bars"},[
-	    m("form", {class:"pure-form"}, [
-		m("fielset", [
-		    m("input", {type: "text",
-				value: app.vm.bar(),
-				onchange: m.withAttr("value", app.vm.bar)}),
-		    m("button",{
-			onclick: app.vm.add,
-			type:"button",
-			class:"pure-button pure-button-primary",
-			id:"add"
-		    }, "add"),
-		])
+    // View
+    app.view = function() {
+	return m("div", {id:"container"},[
+	    m("header", [
+		m("h1", "Bars")
 	    ]),
 
-	    m("ul",
-	      app.vm.bars().map(function(b) {
-		  return m('li', b.name());
-	      }))
-	])
-    ]);
-};
+	    m("div.bars", [
+		m("form.pure-form", [
+		    m("fielset", [
+			m("input", {type: "text",
+				    value: app.vm.bar(),
+				    onchange: m.withAttr("value", app.vm.bar)}),
+			m("button.pure-button.pure-button-primary",{
+			    onclick: app.vm.add,
+			    type:"button",
+			    id:"add"
+			}, "add"),
+		    ])
+		]),
 
-app.controller= function() {
-    app.vm.init();
-};
-
-m.module(document.getElementById("app"), app);
+		m("ul",
+		  app.vm.bars().map(function(b) {
+		      return m('li', b.name());
+		  }))
+	    ])
+	]);
+    };
+    
+    m.module(document.getElementById("app"), app);
+}());
