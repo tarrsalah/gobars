@@ -44,32 +44,26 @@
 
     // View
     app.view = function() {
-	return m("div", {id:"container"},[
-	    m("header", [
-		m("h1", "Bars")
+	return [
+	    m("form.pure-form", [
+		m("fielset", [
+		    m("input", {type: "text",
+				value: app.vm.bar(),
+				onchange: m.withAttr("value", app.vm.bar)}),
+		    m("button.pure-button.pure-button-primary",{
+			onclick: app.vm.add,
+			type:"button",
+			id:"add"
+		    }, "add"),
+		])
 	    ]),
 
-	    m("div.bars", [
-		m("form.pure-form", [
-		    m("fielset", [
-			m("input", {type: "text",
-				    value: app.vm.bar(),
-				    onchange: m.withAttr("value", app.vm.bar)}),
-			m("button.pure-button.pure-button-primary",{
-			    onclick: app.vm.add,
-			    type:"button",
-			    id:"add"
-			}, "add"),
-		    ])
-		]),
-
-		m("ul",
-		  app.vm.bars().map(function(b) {
-		      return m('li', b.name());
-		  }))
-	    ])
-	]);
+	    m("ul",
+	      app.vm.bars().map(function(b) {
+		  return m('li', b.name());
+	      }))
+	];
     };
-    
-    m.module(document.getElementById("app"), app);
+
+    m.module(document.getElementById("bars"), app);
 }());
