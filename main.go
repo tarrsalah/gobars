@@ -16,12 +16,6 @@ const (
 			id INTEGER PRIMARY KEY,
 			bar TEXT
 		);
-		insert into bars(bar)
-			    values ("one bar"),
-				   ("second bar"),
-				   ("third bar"),
-				   ("fourth bar"),
-				   ("fifth bar");
 		`
 )
 
