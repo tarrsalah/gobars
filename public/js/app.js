@@ -1,13 +1,11 @@
-(function() {
+(function(m) {
     var app = {};
 
-    // Models
     var Bar = function(data) {
 	this.id = m.prop(data.id);
 	this.name= m.prop(data.name);
     };
 
-    // Veiw Model
     app.vm= {};
     app.vm.init = function() {
 	var vm = app.vm;
@@ -15,12 +13,12 @@
 	vm.bars = m.prop([]);
 	m.request({
 	    method:"GET",
-	    url:"/bars"})
-	    .then(function(bars) {
-		bars.forEach(function(bar) {
-		    vm.bars().push(new Bar(bar));
-		});
+	    url:"/bars"
+	}).then(function(bars) {
+	    bars.forEach(function(bar) {
+		vm.bars().push(new Bar(bar));
 	    });
+	});
     };
     app.vm.add = function() {
 	var vm = app.vm;
@@ -30,19 +28,18 @@
 		url:"/bars",
 		data: {
 		    name: vm.bar()
-		}})
-		.then(function(bar) {
-		    vm.bars().push(new Bar(bar));
-		});
+		}
+	    }).then(function(bar) {
+		vm.bars().push(new Bar(bar));
+		vm.bar("");
+	    });
 	}
     };
 
-    // Controlelr
     app.controller= function() {
 	app.vm.init();
     };
 
-    // View
     app.view = function() {
 	return [
 	    m("form.pure-form", [
@@ -50,11 +47,10 @@
 		    m("input", {type: "text",
 				value: app.vm.bar(),
 				onchange: m.withAttr("value", app.vm.bar)}),
-		    m("button.pure-button.pure-button-primary",{
+		    m("button#add.pure-button.pure-button-primary", {
 			onclick: app.vm.add,
-			type:"button",
-			id:"add"
-		    }, "add"),
+			type:"button"},
+		      "add"),
 		])
 	    ]),
 
@@ -66,4 +62,4 @@
     };
 
     m.module(document.getElementById("bars"), app);
-}());
+}(m));
