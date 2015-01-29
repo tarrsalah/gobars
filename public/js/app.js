@@ -10,6 +10,7 @@
 	return m.request({
 	    method:"POST",
 	    url:"/bars",
+	    type:Bar,
 	    data: {
 		name: this.name()
 	    }
@@ -19,34 +20,27 @@
     Bar.prototype.getAll = function() {
 	return m.request({
 	    method:"GET",
-	    url:"/bars"
+	    url:"/bars",
+	    type:Bar
 	});
     };
 
     app.vm= {};
     app.vm.init = function() {
-	var vm = app.vm,
-	    bar =  new Bar({name:""}),
+	var bar =  new Bar({name:""}),
 	    bars = m.prop([]);
-
-	bar.getAll().then(function(bars) {
-	    bars.forEach(function(bar) {
-		vm.bars().push(new Bar(bar));
-	    });
-	});
-
-	vm.bar = bar;
-	vm.bars = bars;
+	bar.getAll().then(bars);
+	app.vm.bar = bar;
+	app.vm.bars = bars;
     };
 
     app.controller= function() {
 	app.vm.init();
 	this.add= function() {
 	    var vm = app.vm;
-
 	    if (vm.bar.name()) {
 		vm.bar.save().then(function(bar) {
-		    vm.bars().push(new Bar(bar));
+		    vm.bars().push(bar);
 		    vm.bar.name("");
 		});
 	    }
