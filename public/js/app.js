@@ -6,56 +6,72 @@
 	this.name= m.prop(data.name);
     };
 
-    app.vm= {};
-    app.vm.init = function() {
-	var vm = app.vm;
-	vm.bar =  m.prop("");
-	vm.bars = m.prop([]);
-	m.request({
+    Bar.prototype.save = function() {
+	return m.request({
+	    method:"POST",
+	    url:"/bars",
+	    data: {
+		name: this.name()
+	    }
+	});
+    };
+
+    Bar.prototype.getAll = function() {
+	return m.request({
 	    method:"GET",
 	    url:"/bars"
-	}).then(function(bars) {
+	});
+    };
+
+    app.vm= {};
+    app.vm.init = function() {
+	var vm = app.vm,
+	    bar =  new Bar({name:""}),
+	    bars = m.prop([]);
+
+	bar.getAll().then(function(bars) {
 	    bars.forEach(function(bar) {
 		vm.bars().push(new Bar(bar));
 	    });
 	});
-    };
-    app.vm.add = function() {
-	var vm = app.vm;
-	if (vm.bar()) {
-	    m.request({
-		method:"POST",
-		url:"/bars",
-		data: {
-		    name: vm.bar()
-		}
-	    }).then(function(bar) {
-		vm.bars().push(new Bar(bar));
-		vm.bar("");
-	    });
-	}
+
+	vm.bar = bar;
+	vm.bars = bars;
     };
 
     app.controller= function() {
 	app.vm.init();
+	this.add= function() {
+	    var vm = app.vm;
+
+	    if (vm.bar.name()) {
+		vm.bar.save().then(function(bar) {
+		    vm.bars().push(new Bar(bar));
+		    vm.bar.name("");
+		});
+	    }
+	};
     };
 
-    app.view = function() {
+    app.view = function(controller) {
+	var bar = app.vm.bar,
+	    bars= app.vm.bars;
+
 	return [
 	    m("form.pure-form", [
 		m("fielset", [
 		    m("input", {type: "text",
-				value: app.vm.bar(),
-				onchange: m.withAttr("value", app.vm.bar)}),
+				value: bar.name(),
+				onchange: m.withAttr("value", bar.name)}),
 		    m("button#add.pure-button.pure-button-primary", {
-			onclick: app.vm.add,
+			onclick: controller.add,
 			type:"button"},
 		      "add"),
 		])
 	    ]),
 
 	    m("ul",
-	      app.vm.bars().map(function(b) {
+	      bars().map(function(b) {
 		  return m('li', b.name());
 	      }))
 	];
