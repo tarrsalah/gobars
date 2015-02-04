@@ -28,27 +28,24 @@ func main() {
 	fs := http.FileServer(http.Dir("./public/"))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
 
-	r.Handle("/", logger(http.HandlerFunc(indexHandler))).
-		Methods("GET")
-	r.Handle("/bars", logger(http.HandlerFunc(getBarsHandler))).
-		Methods("GET")
-	r.Handle("/bars", logger(http.HandlerFunc(postBarHandler))).
-		Methods("POST")
+	r.Handle("/", logger(http.HandlerFunc(index))).Methods("GET")
+	r.Handle("/bars", logger(http.HandlerFunc(getBars))).Methods("GET")
+	r.Handle("/bars", logger(http.HandlerFunc(postBar))).Methods("POST")
 
 	log.Println("Listening on http://localhost:3000 ...")
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
+func index(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./public/index.html")
 }
 
-func getBarsHandler(w http.ResponseWriter, r *http.Request) {
+func getBars(w http.ResponseWriter, r *http.Request) {
 	response(w, s.GetAllBars(), http.StatusOK)
 }
 
-func postBarHandler(w http.ResponseWriter, r *http.Request) {
+func postBar(w http.ResponseWriter, r *http.Request) {
 	bar := new(Bar)
 
 	if err := json.NewDecoder(r.Body).Decode(bar); err != nil {
