@@ -47,20 +47,34 @@
 	};
     };
 
-    app.view = function(controller) {
+    app.watchInput = function(ontype, onenter) {
+	return function(e) {
+	    ontype(e);
+	    if (e.keyCode === 13) {
+		onenter();
+	    }
+	};
+    };
+
+    app.view = function(ctr) {
 	var bar = app.vm.bar,
 	    bars= app.vm.bars;
 
 	return [
-	    m("form.pure-form", [
+	    m("form.pure-form",{onsubmit:function(e){e.preventDefault();}},[
 		m("fielset", [
 		    m("input", {type: "text",
-				value: bar.name(),
-				onchange: m.withAttr("value", bar.name)}),
+				onkeypress:
+				app.watchInput(
+				    m.withAttr("value", bar.name),
+				    ctr.add
+				),
+				value: bar.name()
+			       }),
 		    m("button#add.pure-button.pure-button-primary", {
-			onclick: controller.add,
+			onclick: ctr.add,
 			type:"button"},
-		      "add"),
+		      "add")
 		])
 	    ]),
 
