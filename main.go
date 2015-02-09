@@ -26,15 +26,7 @@ type Bar struct {
 	Name string `json:"name"`
 }
 
-func (b Bar) Root() string {
-	return "bar"
-}
-
 type Bars []Bar
-
-func (b Bars) Root() string {
-	return "bars"
-}
 
 type store struct {
 	db *sql.DB
