@@ -1,4 +1,6 @@
-all: client server
+all: listen
+
+build: server client
 
 server :
 	go build
