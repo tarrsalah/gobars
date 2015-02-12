@@ -3,11 +3,11 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"github.com/gohttp/logger"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 const (
@@ -70,6 +70,29 @@ func (b *store) GetAllBars() Bars {
 	return Bars(bars)
 }
 
+func (b *store) GetBarByID(i int64) (Bar, error) {
+	var (
+		id   int64
+		name string
+	)
+
+	stmt, err := b.db.Prepare("SELECT * FROM bars WHERE id = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	err = stmt.QueryRow(i).Scan(&id, &name)
+	if err != nil {
+		panic(err)
+		return Bar{}, err
+	}
+
+	return Bar{
+		Id:   id,
+		Name: name,
+	}, nil
+}
+
 func (b *store) InsertBar(bar Bar) (int64, error) {
 
 	if result, err := b.db.Exec("insert into bars(bar) values(?)", bar.Name); err != nil {
@@ -82,14 +105,12 @@ func (b *store) InsertBar(bar Bar) (int64, error) {
 var s = NewStore()
 
 func main() {
-	logger := logger.New()
 	mux := http.DefaultServeMux
-
 	fs := http.FileServer(http.Dir("./public/"))
-
-	mux.Handle("/bars", logger(http.HandlerFunc(bars)))
-	mux.Handle("/", logger(http.HandlerFunc(index)))
+	mux.Handle("/bars", http.HandlerFunc(bars))
+	mux.Handle("/bars/", http.HandlerFunc(bars))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
+	mux.Handle("/", http.HandlerFunc(index))
 	log.Println("Listening on http://localhost:3000 ...")
 	log.Fatal(http.ListenAndServe(":3000", mux))
 }
@@ -104,17 +125,31 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 func bars(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
-
+	log.Println(path)
 	switch r.Method {
 	case "GET":
-		if path != "/bars" && path != "/bars/" { // 404
+		if len(path) > len("/bars/") { // GET  /bars/:bar
+			key := path[len("/bars/"):]
+			id, err := strconv.ParseInt(key, 10, 64)
+			if err != nil {
+				http.Error(w, "Bad Request", http.StatusBadRequest)
+				return
+			}
+
+			if bar, err := s.GetBarByID(id); err != nil {
+				response(w, bar, http.StatusOK)
+				return
+			}
+		}
+		g
+		if path != "/bars" && path != "/bars/" { // GET /bars || /bars/ 404
 			http.Error(w, "Not Found", http.StatusNotFound)
 			return
 		}
-		response(w, s.GetAllBars(), http.StatusOK)
+		response(w, s.GetAllBars(), http.StatusOK) // GET bars 200
 
 	case "POST":
-		if path != "/bars" && path != "/bars/" { // bad request
+		if path != "/bars" && path != "/bars/" { // POST /bars || /bars/ 405
 			http.Error(w, "Bad Request", http.StatusBadRequest)
 			return
 		}
