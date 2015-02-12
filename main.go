@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"github.com/gohttp/logger"
-	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"
@@ -84,40 +83,55 @@ var s = NewStore()
 
 func main() {
 	logger := logger.New()
-	r := mux.NewRouter()
+	mux := http.DefaultServeMux
 
 	fs := http.FileServer(http.Dir("./public/"))
+
+	mux.Handle("/bars", logger(http.HandlerFunc(bars)))
+	mux.Handle("/", logger(http.HandlerFunc(index)))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
-
-	r.Handle("/", logger(http.HandlerFunc(index))).Methods("GET")
-	r.Handle("/bars", logger(http.HandlerFunc(getBars))).Methods("GET")
-	r.Handle("/bars", logger(http.HandlerFunc(postBar))).Methods("POST")
-
 	log.Println("Listening on http://localhost:3000 ...")
-	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	log.Fatal(http.ListenAndServe(":3000", mux))
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Error(w, "Not Found", http.StatusNotFound)
+		return
+	}
 	http.ServeFile(w, r, "./public/index.html")
 }
 
-func getBars(w http.ResponseWriter, r *http.Request) {
-	response(w, s.GetAllBars(), http.StatusOK)
-}
+func bars(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
 
-func postBar(w http.ResponseWriter, r *http.Request) {
-	bar := new(Bar)
+	switch r.Method {
+	case "GET":
+		if path != "/bars" && path != "/bars/" { // 404
+			http.Error(w, "Not Found", http.StatusNotFound)
+			return
+		}
+		response(w, s.GetAllBars(), http.StatusOK)
 
-	if err := json.NewDecoder(r.Body).Decode(bar); err != nil {
-		log.Printf("Error: %s\n", err.Error())
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+	case "POST":
+		if path != "/bars" && path != "/bars/" { // bad request
+			http.Error(w, "Bad Request", http.StatusBadRequest)
+			return
+		}
+
+		bar := new(Bar)
+		if err := json.NewDecoder(r.Body).Decode(bar); err != nil {
+			log.Printf("Error: %s\n", err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		id, _ := s.InsertBar(*bar)
+		bar.Id = id
+		response(w, bar, http.StatusCreated)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
-
-	id, _ := s.InsertBar(*bar)
-	bar.Id = id
-	response(w, bar, http.StatusCreated)
 }
 
 func response(w http.ResponseWriter, v interface{}, code int) {
