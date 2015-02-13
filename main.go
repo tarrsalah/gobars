@@ -115,6 +115,24 @@ func main() {
 	log.Fatal(http.ListenAndServe(":3000", mux))
 }
 
+func bars(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	log.Println(path)
+	switch r.Method {
+	case "GET":
+		if len(path) > len("/bars/") { // GET  /bars/:bar
+			getBar(w, r)
+			return
+		}
+		getBars(w, r)
+
+	case "POST":
+		postBars(w, r)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
 func index(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.Error(w, "Not Found", http.StatusNotFound)
@@ -123,50 +141,49 @@ func index(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./public/index.html")
 }
 
-func bars(w http.ResponseWriter, r *http.Request) {
+// GET /bars
+func getBars(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
-	log.Println(path)
-	switch r.Method {
-	case "GET":
-		if len(path) > len("/bars/") { // GET  /bars/:bar
-			key := path[len("/bars/"):]
-			id, err := strconv.ParseInt(key, 10, 64)
-			if err != nil {
-				http.Error(w, "Bad Request", http.StatusBadRequest)
-				return
-			}
-
-			if bar, err := s.GetBarByID(id); err != nil {
-				response(w, bar, http.StatusOK)
-				return
-			}
-		}
-		g
-		if path != "/bars" && path != "/bars/" { // GET /bars || /bars/ 404
-			http.Error(w, "Not Found", http.StatusNotFound)
-			return
-		}
-		response(w, s.GetAllBars(), http.StatusOK) // GET bars 200
-
-	case "POST":
-		if path != "/bars" && path != "/bars/" { // POST /bars || /bars/ 405
-			http.Error(w, "Bad Request", http.StatusBadRequest)
-			return
-		}
-
-		bar := new(Bar)
-		if err := json.NewDecoder(r.Body).Decode(bar); err != nil {
-			log.Printf("Error: %s\n", err.Error())
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		id, _ := s.InsertBar(*bar)
-		bar.Id = id
-		response(w, bar, http.StatusCreated)
-	default:
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	if path != "/bars" && path != "/bars/" {
+		http.Error(w, "Not Found", http.StatusNotFound)
+		return
 	}
+	response(w, s.GetAllBars(), http.StatusOK)
+}
+
+// GET /bar/{id}
+func getBar(w http.ResponseWriter, r *http.Request) {
+	key := r.URL.Path[len("/bars/"):]
+	id, err := strconv.ParseInt(key, 10, 64)
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	if bar, err := s.GetBarByID(id); err != nil {
+		response(w, bar, http.StatusOK)
+		return
+	}
+}
+
+// POST /bars
+func postBars(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	if path != "/bars" && path != "/bars/" { // POST /bars || /bars/ 405
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	bar := new(Bar)
+	if err := json.NewDecoder(r.Body).Decode(bar); err != nil {
+		log.Printf("Error: %s\n", err.Error())
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	id, _ := s.InsertBar(*bar)
+	bar.Id = id
+	response(w, bar, http.StatusCreated)
 }
 
 func response(w http.ResponseWriter, v interface{}, code int) {
