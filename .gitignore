@@ -1,3 +1,5 @@
 /bars.db
 /gobars
 /public/bower_components
+/public/bundle.js
+/public/node_modules/

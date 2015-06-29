@@ -1,0 +1,39 @@
+{
+  "name": "gobars-frontend",
+  "version": "0.4.0",
+  "description": "JSON backend demo in go",
+  "main": "scripts/app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tarrsalah/gobars.git"
+  },
+  "keywords": [
+    "go"
+  ],
+  "author": "tarrsalah@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tarrsalah/gobars/issues"
+  },
+  "homepage": "https://github.com/tarrsalah/gobars#readme",
+  "dependencies": {
+    "flux": "^2.0.3",
+    "purecss": "^0.6.0",
+    "react": "^0.13.3",
+    "whatwg-fetch": "^0.9.0"
+  },
+  "devDependencies": {
+    "browserify": "^10.2.4",
+    "reactify": "^1.1.1",
+    "watchify": "^3.2.3"
+  },
+  "scripts": {
+    "build": "browserify . > bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  }
+}

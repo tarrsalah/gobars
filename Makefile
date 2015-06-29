@@ -2,11 +2,15 @@ all: listen
 
 build: server client
 
-server :
+build-server :
 	go build
 
-client:
-	(cd ./public && bower install)
+build-client:
+	(cd ./public && npm install && npm run build)
 
-listen: server
+dev:
+	(cd ./public && npm run build)
+	go run main.go
+
+run: server
 	./gobars

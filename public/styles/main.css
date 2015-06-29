@@ -1,0 +1,11 @@
+h1 {
+	margin-bottom: 20px;
+}
+
+.wrapper {
+	padding: 20px;
+	border-width : 1px;
+	border: solid 1px #e5e5e5;
+	margin: 20px auto;
+	width: 60%;
+}
