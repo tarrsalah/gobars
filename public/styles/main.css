@@ -2,10 +2,15 @@ h1 {
 	margin-bottom: 20px;
 }
 
+.new-bar {
+	width: 80%;
+	margin-right: 10px;
+}
+
 .wrapper {
-	padding: 20px;
+	padding: 20px 40px;
 	border-width : 1px;
 	border: solid 1px #e5e5e5;
 	margin: 20px auto;
-	width: 60%;
+	width: 50%;
 }

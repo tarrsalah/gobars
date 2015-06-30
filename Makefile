@@ -1,16 +1,15 @@
-all: listen
+all: run
 
-build: server client
+build: build-server build-client
 
-build-server :
+build-server:
 	go build
 
 build-client:
 	(cd ./public && npm install && npm run build)
 
-dev:
-	(cd ./public && npm run build)
+dev-server:
 	go run main.go
 
-run: server
-	./gobars
+dev-client:
+	(cd ./public && npm run build)
