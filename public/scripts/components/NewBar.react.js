@@ -6,7 +6,7 @@ var NewBar = React.createClass({
   getInitialState: function() {
 	return {
 	  barName : ""
-	}
+	};
   },
 
   render: function(){
@@ -22,7 +22,7 @@ var NewBar = React.createClass({
 
   handleClick: function(event) {
 	event.preventDefault();
-	BarsActions.create(this.state.barName)
+	BarsActions.create(this.state.barName);
   },
 
   handleChange: function(event) {

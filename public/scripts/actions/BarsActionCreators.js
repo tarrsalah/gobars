@@ -11,8 +11,8 @@ var BarsActions = {
 		.send({name: text})
 		.end(function(err, response){
 		  if (err != null) {
-			console.console.log();(err);
-			return
+			console.log(err);
+			return;
 		  }
 		  Dispatcher.dispatch({
 			actionType: BarsConstants.BARS_CREATE,
@@ -28,7 +28,7 @@ var BarsActions = {
 	  .end(function(err, response){
 		if (err != null) {
 		  console.log(err);
-		  return
+		  return;
 		}
 
 		Dispatcher.dispatch({

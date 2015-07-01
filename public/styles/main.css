@@ -7,6 +7,10 @@ h1 {
 	margin-right: 10px;
 }
 
+.bar-item {
+	padding-bottom: 7px;
+}
+
 .wrapper {
 	padding: 20px 40px;
 	border-width : 1px;
