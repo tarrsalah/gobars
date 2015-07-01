@@ -8,14 +8,14 @@ var BarsList = React.createClass({
 		{this.props.bars.map(function(bar){
 		  return <BarItem key={bar.id} text={bar.name}/>
 		})}
-	  </ul> 
+	  </ul>
 	);
   }
 });
 
 
 var BarItem = React.createClass({
-  
+
   render: function(){
 	return (
 		<li>{this.props.text}</li>

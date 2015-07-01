@@ -4,14 +4,14 @@ var BarsConstants = require('../constants/BarsConstants');
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'event';
-var bars = [];
+var _bars = [];
 
 function createBar(bar) {
-  bars.push(bar);
+  _bars.push(bar);
 }
 
 function initBars(playoad){
-  bars = playoad;
+  _bars = playoad;
 }
 
 
@@ -30,7 +30,7 @@ var BarsStore = assign({}, EventEmitter.prototype, {
   },
 
   getAll: function() {
-	return bars;
+	return _bars;
   }
 
 });

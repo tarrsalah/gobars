@@ -1,23 +1,25 @@
-
 var Dispatcher = require('../dispatcher/Dispatcher');
 var BarsConstants = require('../constants/BarsConstants');
 var Request = require('superagent');
 
 var BarsActions = {
   create: function(text) {
-	Request
-	  .post('/bars')
-	  .send({name: text})
-	  .end(function(err, response){
-		if (err != null) {
-		  console.log(err);
-		  return
-		}
-		Dispatcher.dispatch({
-		  actionType: BarsConstants.BARS_CREATE,
-		  bar: response.body
+
+	if (text.trim() != "") {
+	  Request
+		.post('/bars')
+		.send({name: text})
+		.end(function(err, response){
+		  if (err != null) {
+			console.console.log();(err);
+			return
+		  }
+		  Dispatcher.dispatch({
+			actionType: BarsConstants.BARS_CREATE,
+			bar: response.body
+		  });
 		});
-	  });
+	}
   },
 
   initbars: function() {
