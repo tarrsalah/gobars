@@ -4,33 +4,31 @@ var BarsConstants = require('../constants/BarsConstants');
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'event';
-var _bars = [];
-
-function createBar(bar) {
-  _bars.push(bar);
-}
-
-function initBars(playoad){
-  _bars = playoad;
-}
-
+var _bars = {
+  bars: [],
+  loading: false
+};
 
 var BarsStore = assign({}, EventEmitter.prototype, {
 
   emitChange: function() {
-	this.emit(CHANGE_EVENT);
+    this.emit(CHANGE_EVENT);
   },
 
   addChangeListener: function(callback) {
-	this.on(CHANGE_EVENT, callback);
+    this.on(CHANGE_EVENT, callback);
   },
 
   removeChangeListener: function(callback) {
-	this.removeListener(CHANGE_EVENT, callback);
+    this.removeListener(CHANGE_EVENT, callback);
   },
 
   getAll: function() {
-	return _bars;
+    return _bars.bars;
+  },
+
+  isLoading: function() {
+    return _bars.loading;
   }
 
 });
@@ -38,14 +36,33 @@ var BarsStore = assign({}, EventEmitter.prototype, {
 
 Dispatcher.register(function(action) {
   switch(action.actionType) {
-	case BarsConstants.BARS_CREATE:
-	  createBar(action.bar);
-	  BarsStore.emitChange();
-	  break;
-	case BarsConstants.BARS_INIT:
-	  initBars(action.bars);
-	  BarsStore.emitChange();
-	  break;
+  case BarsConstants.BARS_INITIALISE:
+    _bars.loading = action.payload.loading;
+    BarsStore.emitChange();
+    break;
+  case BarsConstants.BARS_INITIALISE_SUCCESS:
+    _bars.loading = action.payload.loading;
+    _bars.bars = action.payload.bars;
+    BarsStore.emitChange();
+    break;
+  case BarsConstants.BARS_INITIALISE_FAIL:
+    _bars.loading = action.payload.loading;
+    console.log(action.payload.error);
+    BarsStore.emitChange();
+    break;
+  case BarsConstants.BARS_CREATE:
+    _bars.loading = action.payload.loading;
+    BarsStore.emitChange();
+    break;
+  case BarsConstants.BARS_CREATE_SUCCESS:
+    _bars.loading = action.payload.loading;
+    _bars.bars.push(action.payload.bar);
+    BarsStore.emitChange();
+    break;
+  case BarsConstants.BARS_CREATE_FAIL:
+    _bars.loading = action.payload.loading;
+    console.log(action.payload.error);
+    BarsStore.emitChange();
   }
 });
 

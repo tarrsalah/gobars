@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 const (
@@ -116,6 +117,7 @@ func main() {
 }
 
 func bars(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(2 * time.Second)
 	path := r.URL.Path
 	log.Println(path)
 	switch r.Method {

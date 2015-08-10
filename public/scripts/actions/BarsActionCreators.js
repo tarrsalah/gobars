@@ -1,42 +1,99 @@
 var Dispatcher = require('../dispatcher/Dispatcher');
-var BarsConstants = require('../constants/BarsConstants');
-var Request = require('superagent');
+var Constants = require('../constants/BarsConstants.js');
+var fetch = require('whatwg-fetch');
+
+fetch = window.fetch;
 
 var BarsActions = {
-  create: function(text) {
+  init: function() {
+    Dispatcher.dispatch({
+      actionType: Constants.BARS_INITIALISE,
+      payload: {
+        loading: true,
+        bars: []
+      }
+    });
 
-	if (text.trim() != "") {
-	  Request
-		.post('/bars')
-		.send({name: text})
-		.end(function(err, response){
-		  if (err != null) {
-			console.log(err);
-			return;
-		  }
-		  Dispatcher.dispatch({
-			actionType: BarsConstants.BARS_CREATE,
-			bar: response.body
-		  });
-		});
-	}
+    fetch('/bars')
+      .then(function(response){
+        if (response.status >= 200 && response.status < 300) {
+          return response;
+        } else {
+          var err = new Error(response.statusText);
+          err.response = response;
+          throw err;
+        }
+      })
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(payload) {
+        Dispatcher.dispatch({
+          actionType: Constants.BARS_INITIALISE_SUCCESS,
+          payload: {
+            loding: false,
+            bars: payload
+          }
+        });
+      }).catch(function(err) {
+        Dispatcher.dispatch({
+          actionType: Constants.BARS_INITIALISE_FAIL,
+          payload: {
+            loading: false,
+            error: err.message
+          }
+        });
+      });
   },
 
-  initbars: function() {
-	Request
-	  .get('/bars')
-	  .end(function(err, response){
-		if (err != null) {
-		  console.log(err);
-		  return;
-		}
+  createBar: function(bar) {
+    Dispatcher.dispatch({
+      actionType: Constants.BARS_CREATE,
+      payload: {
+        loading: true
+      }
+    });
 
-		Dispatcher.dispatch({
-		  actionType: BarsConstants.BARS_INIT,
-		  bars: response.body
-		});
-	  });
-  }
+    fetch('/bars', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: bar
+      })
+    })
+      .then(function(response){
+        if (response.status >= 200 && response.status < 300) {
+          return response;
+        } else {
+          var err = new Error(response.statusText);
+          err.response = response;
+          throw err;
+        }
+      })
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(payload) {
+        Dispatcher.dispatch({
+          actionType: Constants.BARS_CREATE_SUCCESS,
+          payload: {
+            bar: payload,
+            loading: false
+          }
+        });
+      }).catch(function(err) {
+        Dispatcher.dispatch({
+          actionType: Constants.BARS_CREATE_FAIL,
+          payload: {
+            loading: false,
+            error: err.message
+          }
+        });
+      });
+    }
 };
 
 module.exports = BarsActions;
