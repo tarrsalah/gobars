@@ -3,4 +3,4 @@
 /public/bower_components
 /public/bundle.js
 /public/node_modules/
-/public/.tern-port
+.tern*
