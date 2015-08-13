@@ -13,3 +13,6 @@ dev-server:
 
 dev-client:
 	(cd ./public && npm run dev)
+
+lint-client:
+	(cd ./public && npm run lint)
