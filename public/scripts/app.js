@@ -1,6 +1,6 @@
 var React = require('react');
-var BarsApp = require('./components/BarsApp.react');
+var App = require('./components/App.react');
 var BarsActionCreators = require('./actions/BarsActionCreators');
 
 BarsActionCreators.init();
-React.render(<BarsApp/>, document.getElementById('mount'));
+React.render(<App/>, document.getElementById('mount'));

@@ -11,28 +11,26 @@ var _bars = {
 
 var BarsStore = assign({}, EventEmitter.prototype, {
 
-  emitChange: function() {
+  emitChange() {
     this.emit(CHANGE_EVENT);
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getAll: function() {
+  getAll() {
     return _bars.bars;
   },
 
-  isLoading: function() {
+  isLoading() {
     return _bars.loading;
   }
-
 });
-
 
 Dispatcher.register(function(action) {
   switch(action.actionType) {

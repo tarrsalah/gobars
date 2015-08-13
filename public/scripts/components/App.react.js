@@ -3,43 +3,43 @@ var NewBar = require('./NewBar.react');
 var BarsList = require('./BarsList.react');
 var BarsStore = require('../stores/BarsStore');
 
-var BarsApp = React.createClass({
+var App = React.createClass({
 
-  getInitialState: function(){
+  getInitialState() {
     return {
       bars: BarsStore.getAll(),
       loading: BarsStore.isLoading()
     };
   },
 
-  componentDidMount: function(){
-    BarsStore.addChangeListener(this._onChange);
+  componentDidMount() {
+    BarsStore.addChangeListener(this.handleChange);
   },
 
-  componentWillUnmount: function(){
-    BarsStore.removeChangeListener(this._onChange);
+  componentWillUnmount() {
+    BarsStore.removeChangeListener(this.handleChange);
   },
 
-  _onChange: function(){
+  handleChange() {
     this.setState({
       bars: BarsStore.getAll(),
       loading: BarsStore.isLoading()
     });
   },
 
-  loading: function() {
+  isLoading() {
     if (this.state.loading) {
-      return <span>loading...</span>;
+      return <span>Loading...</span>;
     } else {
       return null;
     }
   },
 
-  render: function() {
+  render() {
     return (
         <div className="wrapper">
             <h1>Bars</h1>
-            {this.loading()}
+            {this.isLoading()}
             <NewBar/>
             <BarsList bars={this.state.bars}/>
         </div>
@@ -49,4 +49,4 @@ var BarsApp = React.createClass({
 
 
 
-module.exports = BarsApp;
+module.exports = App;

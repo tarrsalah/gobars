@@ -3,29 +3,29 @@ var BarsActions = require('../actions/BarsActionCreators');
 
 var NewBar = React.createClass({
 
-  getInitialState: function() {
+  getInitialState(){
     return {
       barName: ''
     };
   },
 
-  render: function(){
+  render(){
     return (
         <form className="pure-form">
         <fieldset>
             <input type="text" value={this.state.barName} onChange={this.handleChange} className="new-bar"/>
-            <button type="submit" className="pure-button pure-button-primary" onClick={this.handleClick}>Add Bar</button>
+            <button type="submit" className="pure-button pure-button-primary" onClick={this.handleClick}>Add</button>
           </fieldset>
         </form>
     );
   },
 
-  handleClick: function(event) {
+  handleClick(event) {
     event.preventDefault();
     BarsActions.createBar(this.state.barName);
   },
 
-  handleChange: function(event) {
+  handleChange(event) {
     this.setState({barName: event.target.value});
   }
 });

@@ -2,7 +2,7 @@ var React = require('react');
 
 var BarsList = React.createClass({
 
-  render: function(){
+  render(){
     return (
         <ul>
             {this.props.bars.map(function(bar){
@@ -18,7 +18,7 @@ var BarsList = React.createClass({
 
 var BarItem = React.createClass({
 
-  render: function(){
+  render(){
     return (
         <li className="bar-item">{this.props.text}</li>
     );

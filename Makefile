@@ -12,4 +12,4 @@ dev-server:
 	go run main.go
 
 dev-client:
-	(cd ./public && npm run build)
+	(cd ./public && npm run dev)

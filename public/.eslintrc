@@ -6,6 +6,9 @@
 
   "ecmaFeatures": {
     "jsx": true,
+    "arrowFunctions": true,
+    "objectLiteralShorthandMethods": true,
+    "objectLiteralShorthandProperties": true,
   },
 
   "rules": {

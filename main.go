@@ -117,7 +117,7 @@ func main() {
 }
 
 func bars(w http.ResponseWriter, r *http.Request) {
-	time.Sleep(2 * time.Second)
+	time.Sleep(500 * time.Millisecond)
 	path := r.URL.Path
 	log.Println(path)
 	switch r.Method {

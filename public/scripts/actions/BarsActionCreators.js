@@ -5,7 +5,7 @@ var fetch = require('whatwg-fetch');
 fetch = window.fetch;
 
 var BarsActions = {
-  init: function() {
+  init() {
     Dispatcher.dispatch({
       actionType: Constants.BARS_INITIALISE,
       payload: {
@@ -46,7 +46,7 @@ var BarsActions = {
       });
   },
 
-  createBar: function(bar) {
+  createBar(bar) {
     Dispatcher.dispatch({
       actionType: Constants.BARS_CREATE,
       payload: {

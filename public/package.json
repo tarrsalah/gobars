@@ -25,17 +25,12 @@
     "whatwg-fetch": "^0.9.0"
   },
   "devDependencies": {
-    "browserify": "^10.2.4",
-    "reactify": "^1.1.1",
-    "watchify": "^3.2.3"
+    "babel-loader": "^5.3.2",
+    "webpack": "^1.11.0"
   },
   "scripts": {
-    "build": "browserify . > bundle.js",
+    "dev":"./node_modules/.bin/webpack --config webpack.config.js --watch",
+    "build": "./node_modules/.bin/webpack --config webpack.config.js -p",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "browserify": {
-    "transform": [
-      "reactify"
-    ]
   }
 }
