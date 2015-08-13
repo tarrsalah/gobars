@@ -1,6 +1,7 @@
 var Dispatcher = require('../dispatcher/Dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var BarsConstants = require('../constants/BarsConstants');
+var BarsActionTypes = require('../constants').BarsActionTypes;
+var AppActionTypes = require('../constants').AppActionTypes;
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'event';
@@ -34,30 +35,30 @@ var BarsStore = assign({}, EventEmitter.prototype, {
 
 Dispatcher.register(function(action) {
   switch(action.actionType) {
-  case BarsConstants.BARS_INITIALISE:
+  case AppActionTypes.INITIALISE:
     _bars.loading = action.payload.loading;
     BarsStore.emitChange();
     break;
-  case BarsConstants.BARS_INITIALISE_SUCCESS:
+  case AppActionTypes.INITIALISE_SUCCESS:
     _bars.loading = action.payload.loading;
     _bars.bars = action.payload.bars;
     BarsStore.emitChange();
     break;
-  case BarsConstants.BARS_INITIALISE_FAIL:
+  case AppActionTypes.INITIALISE_FAIL:
     _bars.loading = action.payload.loading;
     console.log(action.payload.error);
     BarsStore.emitChange();
     break;
-  case BarsConstants.BARS_CREATE:
+  case BarsActionTypes.BARS_CREATE:
     _bars.loading = action.payload.loading;
     BarsStore.emitChange();
     break;
-  case BarsConstants.BARS_CREATE_SUCCESS:
+  case BarsActionTypes.BARS_CREATE_SUCCESS:
     _bars.loading = action.payload.loading;
     _bars.bars.push(action.payload.bar);
     BarsStore.emitChange();
     break;
-  case BarsConstants.BARS_CREATE_FAIL:
+  case BarsActionTypes.BARS_CREATE_FAIL:
     _bars.loading = action.payload.loading;
     console.log(action.payload.error);
     BarsStore.emitChange();

@@ -1,5 +1,6 @@
 var Dispatcher = require('../dispatcher/Dispatcher');
-var Constants = require('../constants/BarsConstants.js');
+var BarActionTypes = require('../constants').BarsActionTypes;
+var AppActionTypes = require('../constants').AppActionTypes;
 var fetch = require('whatwg-fetch');
 
 fetch = window.fetch;
@@ -7,7 +8,7 @@ fetch = window.fetch;
 var BarsActions = {
   init() {
     Dispatcher.dispatch({
-      actionType: Constants.BARS_INITIALISE,
+      actionType: AppActionTypes.INITIALISE,
       payload: {
         loading: true,
         bars: []
@@ -29,7 +30,7 @@ var BarsActions = {
       })
       .then(function(payload) {
         Dispatcher.dispatch({
-          actionType: Constants.BARS_INITIALISE_SUCCESS,
+          actionType: AppActionTypes.INITIALISE_SUCCESS,
           payload: {
             loding: false,
             bars: payload
@@ -37,7 +38,7 @@ var BarsActions = {
         });
       }).catch(function(err) {
         Dispatcher.dispatch({
-          actionType: Constants.BARS_INITIALISE_FAIL,
+          actionType: AppActionTypes.INITIALISE_FAIL,
           payload: {
             loading: false,
             error: err.message
@@ -48,7 +49,7 @@ var BarsActions = {
 
   createBar(bar) {
     Dispatcher.dispatch({
-      actionType: Constants.BARS_CREATE,
+      actionType: BarActionTypes.BARS_CREATE,
       payload: {
         loading: true
       }
@@ -78,7 +79,7 @@ var BarsActions = {
       })
       .then(function(payload) {
         Dispatcher.dispatch({
-          actionType: Constants.BARS_CREATE_SUCCESS,
+          actionType: BarActionTypes.BARS_CREATE_SUCCESS,
           payload: {
             bar: payload,
             loading: false
@@ -86,7 +87,7 @@ var BarsActions = {
         });
       }).catch(function(err) {
         Dispatcher.dispatch({
-          actionType: Constants.BARS_CREATE_FAIL,
+          actionType: BarActionTypes.BARS_CREATE_FAIL,
           payload: {
             loading: false,
             error: err.message
