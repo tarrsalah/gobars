@@ -13,8 +13,13 @@ var NewBar = React.createClass({
     return (
         <form className="pure-form">
         <fieldset>
-            <input type="text" value={this.state.barName} onChange={this.handleChange} className="new-bar"/>
-            <button type="submit" className="pure-button pure-button-primary" onClick={this.handleClick}>Add</button>
+            <input type="text"
+                  value={this.state.barName}
+                  onChange={this.handleChange}
+                  className="new-bar"/>
+            <button type="submit"
+                    className="pure-button pure-button-primary"
+                    onClick={this.handleClick}>Add</button>
           </fieldset>
         </form>
     );
