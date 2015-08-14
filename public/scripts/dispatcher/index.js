@@ -6,10 +6,6 @@ function register(callback) {
 }
 
 function dispatch(actionType, payload) {
-  if (!actionType) {
-    throw new Error('You forgot to specify a type.');
-  }
-
   flux.dispatch({actionType, payload});
 }
 

@@ -27,7 +27,11 @@ var NewBar = React.createClass({
 
   handleClick(event) {
     event.preventDefault();
-    BarsActions.addBar(this.state.barName);
+    var barName = this.state.barName.trim();
+    if (barName !== '' ) {
+      BarsActions.addBar(this.state.barName.trim());
+    }
+    this.setState({barName: ''});
   },
 
   handleChange(event) {
