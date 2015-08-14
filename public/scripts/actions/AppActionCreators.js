@@ -5,7 +5,7 @@ var Api = require('../utils/APIUtils.js');
 var AppActions = {
   init() {
     dispatchAsync(Api.getBars(), {
-      request: AppActionTypes.INITIALISE,
+      request: AppActionTypes.INITIALISE_REQUEST,
       success: AppActionTypes.INITIALISE_SUCCESS,
       failure: AppActionTypes.INITIALISE_FAIL
     });

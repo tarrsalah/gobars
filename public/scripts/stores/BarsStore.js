@@ -20,7 +20,7 @@ var BarsStore = createStore({
 
 register(function(action) {
   switch(action.actionType) {
-  case AppActionTypes.INITIALISE:
+  case AppActionTypes.INITIALISE_REQUEST:
     _bars.loading = true;
     BarsStore.emitChange();
     break;
@@ -34,16 +34,16 @@ register(function(action) {
     console.log(action.payload);
     BarsStore.emitChange();
     break;
-  case BarsActionTypes.BARS_CREATE:
+  case BarsActionTypes.CREATE_REQUEST:
     _bars.loading = true;
     BarsStore.emitChange();
     break;
-  case BarsActionTypes.BARS_CREATE_SUCCESS:
+  case BarsActionTypes.CREATE_SUCCESS:
     _bars.loading = false;
     _bars.bars.push(action.payload);
     BarsStore.emitChange();
     break;
-  case BarsActionTypes.BARS_CREATE_FAIL:
+  case BarsActionTypes.CREATE_FAILURE:
     _bars.loading = false;
     console.log(action.payload);
     BarsStore.emitChange();
