@@ -1,29 +1,14 @@
 var register = require('../dispatcher').register;
-var EventEmitter = require('events').EventEmitter;
+var createStore = require('../utils/StoreUtils.js').createStore;
 var BarsActionTypes = require('../constants').BarsActionTypes;
 var AppActionTypes = require('../constants').AppActionTypes;
-var assign = require('object-assign');
 
-var CHANGE_EVENT = 'event';
 var _bars = {
   bars: [],
   loading: false
 };
 
-var BarsStore = assign({}, EventEmitter.prototype, {
-
-  emitChange() {
-    this.emit(CHANGE_EVENT);
-  },
-
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
-
+var BarsStore = createStore({
   getAll() {
     return _bars.bars;
   },

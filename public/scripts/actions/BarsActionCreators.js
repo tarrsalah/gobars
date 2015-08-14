@@ -1,6 +1,6 @@
 var BarActionTypes = require('../constants').BarsActionTypes;
 var dispatchAsync = require('../dispatcher').dispatchAsync;
-var Api = require('../utils/APIutils.js');
+var Api = require('../utils/APIUtils.js');
 
 var BarsActions = {
   addBar(bar){

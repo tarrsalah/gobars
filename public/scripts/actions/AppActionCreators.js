@@ -1,6 +1,6 @@
 var AppActionTypes = require('../constants').AppActionTypes;
 var dispatchAsync = require('../dispatcher').dispatchAsync;
-var Api = require('../utils/APIutils.js');
+var Api = require('../utils/APIUtils.js');
 
 var AppActions = {
   init() {
