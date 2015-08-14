@@ -1,100 +1,15 @@
-var Dispatcher = require('../dispatcher/Dispatcher');
 var BarActionTypes = require('../constants').BarsActionTypes;
-var AppActionTypes = require('../constants').AppActionTypes;
-var fetch = require('whatwg-fetch');
-
-fetch = window.fetch;
+var dispatchAsync = require('../dispatcher').dispatchAsync;
+var Api = require('../utils/APIutils.js');
 
 var BarsActions = {
-  init() {
-    Dispatcher.dispatch({
-      actionType: AppActionTypes.INITIALISE,
-      payload: {
-        loading: true,
-        bars: []
-      }
-    });
-
-    fetch('/bars')
-      .then(function(response){
-        if (response.status >= 200 && response.status < 300) {
-          return response;
-        } else {
-          var err = new Error(response.statusText);
-          err.response = response;
-          throw err;
-        }
-      })
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(payload) {
-        Dispatcher.dispatch({
-          actionType: AppActionTypes.INITIALISE_SUCCESS,
-          payload: {
-            loding: false,
-            bars: payload
-          }
-        });
-      }).catch(function(err) {
-        Dispatcher.dispatch({
-          actionType: AppActionTypes.INITIALISE_FAIL,
-          payload: {
-            loading: false,
-            error: err.message
-          }
-        });
-      });
-  },
-
-  createBar(bar) {
-    Dispatcher.dispatch({
-      actionType: BarActionTypes.BARS_CREATE,
-      payload: {
-        loading: true
-      }
-    });
-
-    fetch('/bars', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: bar
-      })
-    })
-      .then(function(response){
-        if (response.status >= 200 && response.status < 300) {
-          return response;
-        } else {
-          var err = new Error(response.statusText);
-          err.response = response;
-          throw err;
-        }
-      })
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(payload) {
-        Dispatcher.dispatch({
-          actionType: BarActionTypes.BARS_CREATE_SUCCESS,
-          payload: {
-            bar: payload,
-            loading: false
-          }
-        });
-      }).catch(function(err) {
-        Dispatcher.dispatch({
-          actionType: BarActionTypes.BARS_CREATE_FAIL,
-          payload: {
-            loading: false,
-            error: err.message
-          }
-        });
-      });
-    }
+  addBar(bar){
+  dispatchAsync(Api.addBar(bar), {
+    request: BarActionTypes.BARS_CREATE,
+    success: BarActionTypes.BARS_CREATE_SUCCESS,
+    failure: BarActionTypes.BARS_CREATE_FAIL
+  });
+  }
 };
 
 module.exports = BarsActions;

@@ -1,4 +1,4 @@
-var Dispatcher = require('../dispatcher/Dispatcher');
+var register = require('../dispatcher').register;
 var EventEmitter = require('events').EventEmitter;
 var BarsActionTypes = require('../constants').BarsActionTypes;
 var AppActionTypes = require('../constants').AppActionTypes;
@@ -33,34 +33,34 @@ var BarsStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-Dispatcher.register(function(action) {
+register(function(action) {
   switch(action.actionType) {
   case AppActionTypes.INITIALISE:
-    _bars.loading = action.payload.loading;
+    _bars.loading = true;
     BarsStore.emitChange();
     break;
   case AppActionTypes.INITIALISE_SUCCESS:
-    _bars.loading = action.payload.loading;
-    _bars.bars = action.payload.bars;
+    _bars.loading = false;
+    _bars.bars = action.payload;
     BarsStore.emitChange();
     break;
   case AppActionTypes.INITIALISE_FAIL:
-    _bars.loading = action.payload.loading;
-    console.log(action.payload.error);
+    _bars.loading = false;
+    console.log(action.payload);
     BarsStore.emitChange();
     break;
   case BarsActionTypes.BARS_CREATE:
-    _bars.loading = action.payload.loading;
+    _bars.loading = true;
     BarsStore.emitChange();
     break;
   case BarsActionTypes.BARS_CREATE_SUCCESS:
-    _bars.loading = action.payload.loading;
-    _bars.bars.push(action.payload.bar);
+    _bars.loading = false;
+    _bars.bars.push(action.payload);
     BarsStore.emitChange();
     break;
   case BarsActionTypes.BARS_CREATE_FAIL:
-    _bars.loading = action.payload.loading;
-    console.log(action.payload.error);
+    _bars.loading = false;
+    console.log(action.payload);
     BarsStore.emitChange();
   }
 });
