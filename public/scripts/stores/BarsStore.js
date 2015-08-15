@@ -1,4 +1,4 @@
-var register = require('../dispatcher').register;
+var flux = require('../dispatcher');
 var createStore = require('../utils/StoreUtils.js').createStore;
 var ActionTypes = require('../constants');
 
@@ -17,7 +17,7 @@ var BarsStore = createStore({
   }
 });
 
-register(function(action) {
+flux.register(function(action) {
   switch(action.actionType) {
   case ActionTypes.APP_INITIALISE_REQUEST:
     _bars.loading = true;
