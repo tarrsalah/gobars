@@ -1,15 +1,10 @@
 var keymirror = require('keymirror');
 
-module.exports = {
-  BarsActionTypes: keymirror({
-    CREATE_REQUEST: null,
-    CREATE_SUCCESS: null,
-    CREATE_FAILURE: null
-  }),
-
-  AppActionTypes: keymirror({
-    INITIALISE_REQUEST: null,
-    INITIALISE_SUCCESS: null,
-    INITIALISE_FAIL: null
-  })
-};
+module.exports = keymirror({
+    BARS_CREATE_REQUEST: null,
+    BARS_CREATE_SUCCESS: null,
+    BARS_CREATE_FAILURE: null,
+    APP_INITIALISE_REQUEST: null,
+    APP_INITIALISE_SUCCESS: null,
+    APP_INITIALISE_FAIL: null
+});

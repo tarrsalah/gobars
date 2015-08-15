@@ -1,13 +1,13 @@
-var AppActionTypes = require('../constants').AppActionTypes;
+var ActionTypes = require('../constants');
 var dispatchAsync = require('../dispatcher').dispatchAsync;
 var Api = require('../utils/APIUtils.js');
 
 var AppActions = {
   init() {
     dispatchAsync(Api.getBars(), {
-      request: AppActionTypes.INITIALISE_REQUEST,
-      success: AppActionTypes.INITIALISE_SUCCESS,
-      failure: AppActionTypes.INITIALISE_FAIL
+      request: ActionTypes.APP_INITIALISE_REQUEST,
+      success: ActionTypes.APP_INITIALISE_SUCCESS,
+      failure: ActionTypes.APP_INITIALISE_FAIL
     });
   }
 };

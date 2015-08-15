@@ -1,13 +1,13 @@
-var BarActionTypes = require('../constants').BarsActionTypes;
+var ActionTypes = require('../constants');
 var dispatchAsync = require('../dispatcher').dispatchAsync;
 var Api = require('../utils/APIUtils.js');
 
 var BarsActions = {
   addBar(bar){
   dispatchAsync(Api.addBar(bar), {
-    request: BarActionTypes.CREATE_REQUEST,
-    success: BarActionTypes.CREATE_SUCCESS,
-    failure: BarActionTypes.CREATE_FAILURE
+    request: ActionTypes.BARS_CREATE_REQUEST,
+    success: ActionTypes.BARS_CREATE_SUCCESS,
+    failure: ActionTypes.BARS_CREATE_FAILURE
   });
   }
 };

@@ -1,7 +1,6 @@
 var register = require('../dispatcher').register;
 var createStore = require('../utils/StoreUtils.js').createStore;
-var BarsActionTypes = require('../constants').BarsActionTypes;
-var AppActionTypes = require('../constants').AppActionTypes;
+var ActionTypes = require('../constants');
 
 var _bars = {
   bars: [],
@@ -20,30 +19,30 @@ var BarsStore = createStore({
 
 register(function(action) {
   switch(action.actionType) {
-  case AppActionTypes.INITIALISE_REQUEST:
+  case ActionTypes.APP_INITIALISE_REQUEST:
     _bars.loading = true;
     BarsStore.emitChange();
     break;
-  case AppActionTypes.INITIALISE_SUCCESS:
+  case ActionTypes.APP_INITIALISE_SUCCESS:
     _bars.loading = false;
     _bars.bars = action.payload;
     BarsStore.emitChange();
     break;
-  case AppActionTypes.INITIALISE_FAIL:
+  case ActionTypes.APP_INITIALISE_FAIL:
     _bars.loading = false;
     console.log(action.payload);
     BarsStore.emitChange();
     break;
-  case BarsActionTypes.CREATE_REQUEST:
+  case ActionTypes.BARS_CREATE_REQUEST:
     _bars.loading = true;
     BarsStore.emitChange();
     break;
-  case BarsActionTypes.CREATE_SUCCESS:
+  case ActionTypes.BARS_CREATE_SUCCESS:
     _bars.loading = false;
     _bars.bars.push(action.payload);
     BarsStore.emitChange();
     break;
-  case BarsActionTypes.CREATE_FAILURE:
+  case ActionTypes.BARS_CREATE_FAILURE:
     _bars.loading = false;
     console.log(action.payload);
     BarsStore.emitChange();
