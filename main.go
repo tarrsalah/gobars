@@ -109,11 +109,11 @@ var s = NewStore()
 func main() {
 	mux := http.DefaultServeMux
 	gzipbars := gziphandler.GzipHandler(http.HandlerFunc(bars))
-
 	fs := http.FileServer(http.Dir("./public/"))
+	gzipStatic := gziphandler.GzipHandler(http.StripPrefix("/public/", fs))
 	mux.Handle("/bars", gzipbars)
 	mux.Handle("/bars/", gzipbars)
-	http.Handle("/public/", http.StripPrefix("/public/", fs))
+	http.Handle("/public/", gzipStatic)
 	mux.Handle("/", http.HandlerFunc(index))
 	log.Println("Listening on http://localhost:3000 ...")
 	log.Fatal(http.ListenAndServe(":3000", mux))
