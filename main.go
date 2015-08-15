@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/nytimes/gziphandler"
 	"log"
 	"net/http"
 	"os"
@@ -107,9 +108,11 @@ var s = NewStore()
 
 func main() {
 	mux := http.DefaultServeMux
+	gzipbars := gziphandler.GzipHandler(http.HandlerFunc(bars))
+
 	fs := http.FileServer(http.Dir("./public/"))
-	mux.Handle("/bars", http.HandlerFunc(bars))
-	mux.Handle("/bars/", http.HandlerFunc(bars))
+	mux.Handle("/bars", gzipbars)
+	mux.Handle("/bars/", gzipbars)
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
 	mux.Handle("/", http.HandlerFunc(index))
 	log.Println("Listening on http://localhost:3000 ...")
