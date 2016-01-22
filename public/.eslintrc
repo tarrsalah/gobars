@@ -12,7 +12,7 @@
   },
 
   "rules": {
-    "quotes":[2, "single"],
+    "quotes":[1, "single"],
     "strict": [0],
     "no-underscore-dangle": 0,
     "react/jsx-uses-react": 2,

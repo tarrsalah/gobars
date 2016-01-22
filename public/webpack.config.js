@@ -1,6 +1,8 @@
+var path = require('path');
+
 module.exports = {
   cache: true,
-  entry: './scripts/app.js',
+  entry: path.join(__dirname, 'scripts', 'index.js'),
   output: {
     path: __dirname,
     filename: 'bundle.js'
@@ -9,8 +11,10 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel'
+        exclude: /node_modules/,
+        loaders : [
+          'babel-loader',
+        ]
       }
     ]
   }
