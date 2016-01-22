@@ -1,11 +1,13 @@
 {
   "env": {
     "browser": true,
+    "es6": true,
     "node": true
   },
 
   "ecmaFeatures": {
     "jsx": true,
+    "modules": true , 
     "arrowFunctions": true,
     "objectLiteralShorthandMethods": true,
     "objectLiteralShorthandProperties": true,
