@@ -1,12 +1,13 @@
 var React = require('react');
 var AddBar = require('../components/AddBar');
 var Bars = require('../components/Bars');
-var actions = require('../actions');
+var actions = require('../actions').actions;
 var connect = require('react-redux').connect;
+var bindActionCreators = require('redux').bindActionCreators;
 
 class App extends React.Component {
   constructor(props){
-    super(props)
+    super(props);
   }
 
   render() {
@@ -27,9 +28,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    addBar: (text) => dispatch(actions.addBar(text))
-  }
+  return bindActionCreators(actions,dispatch);
 }
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(App);

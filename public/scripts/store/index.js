@@ -1,5 +1,5 @@
 var createStore= require('redux').createStore;
 var combineReducers = require('redux').combineReducers;
-var reducer= require('../reducers');
+var rootReducer = require('../reducers');
 
-module.exports = createStore(reducer);
+module.exports = createStore(rootReducer);
