@@ -1,4 +1,4 @@
-all: run
+all: build
 
 build: build-server build-client
 

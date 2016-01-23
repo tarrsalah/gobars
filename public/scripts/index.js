@@ -1,7 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom'
+var React= require('react');
+var ReactDOM= require('react-dom');
+var App = require('./containers');
+var store = require('./store');
+var Provider = require('react-redux').Provider;
 
 ReactDOM.render(
-    <h1> Hello, it's me </h1>,
-    document.getElementById('mount')
+  <Provider store={store}>
+    <App/>
+  </Provider>
+  ,
+  document.getElementById('mount')
 );
