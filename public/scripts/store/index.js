@@ -1,6 +1,5 @@
 var createStore= require('redux').createStore;
 var applyMiddleware = require('redux').applyMiddleware;
-var combineReducers = require('redux').combineReducers;
 var createLogger = require('redux-logger');
 var thunkMiddleware = require('redux-thunk');
 var rootReducer = require('../reducers');
