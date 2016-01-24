@@ -14,7 +14,7 @@ class App extends React.Component {
     return (
         <div>
           <h1>gobars</h1>
-          <AddBar addBar={this.props.addBar}/>
+          <AddBar asyncAddBar={this.props.asyncAddBar}/>
           <Bars bars={this.props.bars}/>
         </div>
    );

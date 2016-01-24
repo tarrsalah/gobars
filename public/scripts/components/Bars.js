@@ -7,7 +7,7 @@ class Bars extends React.Component {
         <div id="bars">
           <ul>
             {this.props.bars.map((bar, index) => {
-              return (<li key={index}>{bar}</li>)
+              return (<li key={index}>{bar.name}</li>);
             })}
           </ul>
         </div>
@@ -15,8 +15,9 @@ class Bars extends React.Component {
   }
 }
 
+
 Bars.propTypes= {
-  bars: PropTypes.arrayOf(PropTypes.string).isRequired,
-}
+  bars: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
 module.exports= Bars;
