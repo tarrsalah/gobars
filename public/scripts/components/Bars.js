@@ -6,8 +6,8 @@ class Bars extends React.Component {
     return (
         <div id="bars">
           <ul>
-            {this.props.bars.map((bar, index) => {
-              return (<li key={index}>{bar.name}</li>);
+            {this.props.bars.map(bar => {
+              return (<li key={bar.id}>{bar.name}</li>);
             })}
           </ul>
         </div>

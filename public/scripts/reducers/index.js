@@ -11,7 +11,7 @@ function bars(state = [], action) {
   case constants.ADD_BAR:
     return state;
   case constants.ADD_BAR_SUCCESS:
-    return [...state, {name: action.text}];
+    return [...state, action.bar];
   default:
     return state;
   }

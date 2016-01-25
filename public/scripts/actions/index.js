@@ -27,13 +27,13 @@ module.exports.addBar = (text) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({Name: text})
+      body: JSON.stringify({name: text})
     })
       .then(response => response.json())
       .then(response => {
         dispatch({
           type: constants.ADD_BAR_SUCCESS,
-          text: response.name
+          bar: response
         });
       });
   };
