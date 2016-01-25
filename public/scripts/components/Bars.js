@@ -20,4 +20,4 @@ Bars.propTypes= {
   bars: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-module.exports= Bars;
+module.exports = Bars;

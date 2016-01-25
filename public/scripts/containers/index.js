@@ -1,7 +1,7 @@
 var React = require('react');
 var AddBar = require('../components/AddBar');
 var Bars = require('../components/Bars');
-var actions = require('../actions').actions;
+var actions = require('../actions');
 var connect = require('react-redux').connect;
 var bindActionCreators = require('redux').bindActionCreators;
 
@@ -14,7 +14,7 @@ class App extends React.Component {
     return (
         <div>
           <h1>gobars</h1>
-          <AddBar asyncAddBar={this.props.asyncAddBar}/>
+          <AddBar addBar={this.props.addBar}/>
           <Bars bars={this.props.bars}/>
         </div>
    );

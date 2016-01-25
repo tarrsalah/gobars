@@ -3,7 +3,7 @@ var applyMiddleware = require('redux').applyMiddleware;
 var createLogger = require('redux-logger');
 var thunkMiddleware = require('redux-thunk');
 var rootReducer = require('../reducers');
-var actions = require('../actions').actions;
+var actions = require('../actions');
 
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,

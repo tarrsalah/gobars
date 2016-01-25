@@ -29,7 +29,7 @@ class AddBar extends React.Component {
     event.preventDefault();
     var bar = this.state.bar.trim();
     if (bar !== '' ) {
-      this.props.asyncAddBar(this.state.bar.trim());
+      this.props.addBar(this.state.bar.trim());
     }
     this.setState({bar: ''});
   }
