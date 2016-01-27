@@ -8,6 +8,5 @@ ReactDOM.render(
   <Provider store={store}>
     <App/>
   </Provider>
-  ,
-  document.getElementById('mount')
+  , document.getElementById('mount')
 );

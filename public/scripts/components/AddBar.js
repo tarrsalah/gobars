@@ -11,14 +11,14 @@ class AddBar extends React.Component {
         <form className="pure-form">
           <fieldset>
             <input type="text"
-              value={this.state.bar}
-              onChange={this.handleChange.bind(this)}/>
+                   value={this.state.bar}
+                   onChange={this.handleChange.bind(this)}/>
             <button type="submit"
-              className="pure-button pure-button-primary"
-                onClick={this.handleClick.bind(this)}>Add</button>
+                    className="pure-button pure-button-primary"
+                    onClick={this.handleClick.bind(this)}>Add</button>
           </fieldset>
         </form>
-    );
+        );
   }
 
   handleChange(event) {
