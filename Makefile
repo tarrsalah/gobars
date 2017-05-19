@@ -3,6 +3,7 @@ all: build
 build: build-server build-client
 
 build-server:
+	go get
 	go build
 
 build-client:
